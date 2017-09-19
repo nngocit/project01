@@ -1,0 +1,1215 @@
+<template>
+  <style>
+    .pagination>.active>a,
+    .pagination>.active>span,
+    .pagination>.active>a:hover,
+    .pagination>.active>span:hover,
+    .pagination>.active>a:focus,
+    .pagination>.active>span:focus {
+      z-index: 3;
+      color: #fff;
+      cursor: default;
+      background-color: #33b78b;
+      border-color: #33b764;
+      font-color: #33b764;
+    }
+
+    ai-dialog-overlay.active {
+      background-color: black;
+      opacity: .5;
+    }
+
+    .note {
+      padding: 6px 13px 58px;
+      display: block;
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .pagination>li>a,
+    .pagination>li>span {
+      position: relative;
+      float: left;
+      padding: 6px 12px;
+      margin-left: -1px;
+      line-height: 1.42857143;
+      color: #6c6f73;
+      text-decoration: none;
+      background-color: #fff;
+      border: 1px solid #ddd;
+    }
+
+    .pagination>li>a:hover,
+    .pagination>li>span:hover,
+    .pagination>li>a:focus,
+    .pagination>li>span:focus {
+      z-index: 2;
+      color: #6c6f73;
+      background-color: #eee;
+      border-color: #ddd;
+    }
+
+    .markdown {
+      padding-left: 10px;
+      font-family: "Roboto", sans-serif;
+      font-size: 14px;
+      letter-spacing: 0;
+      line-height: 1.6;
+      word-wrap: break-word;
+      word-break: break-word;
+      border-left: 1px dashed #DCDCDC;
+      border-top: 1px dashed #DCDCDC;
+      border-bottom: 1px dashed #DCDCDC;
+      border-right: 1px dashed #DCDCDC;
+    }
+
+    .excerpt {
+      margin: 0 13px 10px;
+      font-family: "intercom-font", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #595b61;
+    }
+
+    .title {
+      color: #3b5998;
+    }
+
+    .hrdot {
+      border-top: 1px dashed #DCDCDC;
+      border-bottom: 1px dashed #fff;
+    }
+
+    .text-muted {
+      color: #777;
+      font-size: 11px;
+    }
+
+    .BorderCmt:before {
+      content: '';
+      position: absolute;
+      margin-top: 22px;
+      top: -13px;
+      left: -15px;
+      width: 0;
+      height: 0;
+      border-bottom: 10px solid #EFF3F6;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      transform: rotateY;
+      transform: rotate(-90deg);
+    }
+
+    .panel-default>.panel-heading {
+      color: #333;
+      background-color: rgba(245, 246, 247, 0.5);
+      border-color: solid 1px rgba(0, 0, 0, 0.1);
+    }
+
+    .info {
+      font-size: 12px;
+      color: #999;
+    }
+
+    .tool-box {
+      float: left;
+      color: #807d7d;
+      margin-top: 6px;
+    }
+
+    .tool-box-question {
+      display: inline-block;
+      padding: 0px 3px;
+      margin-bottom: 0;
+      font-size: 12px;
+      font-weight: normal;
+      line-height: 1.42857143;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: middle;
+      -ms-touch-action: manipulation;
+      touch-action: manipulation;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      background-image: none;
+      border: 1px solid transparent;
+      border-radius: 4px;
+    }
+
+
+
+    .TieuDeCmnt {
+      font-style: italic;
+      font-size: smaller;
+      font-weight: 800;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .block_content {
+      height: auto;
+    }
+
+    .BorderCmt {
+      font-size: 12px;
+      border-radius: 6px;
+      position: relative;
+      padding: -5px 7px;
+      background: #EFF3F6;
+      border: 1px solid #EFF3F6;
+      margin: 7px 2px 1px 18px;
+    }
+    /*Comment*/
+
+    .timeline h2.title {
+      position: relative;
+      font-size: 16px;
+      margin: 0;
+    }
+    /*End Comment*/
+    /*Checkbok*/
+
+    .checkbox {
+      padding-left: 20px;
+    }
+
+    .checkbox label {
+      display: inline-block;
+      position: relative;
+      padding-left: 5px;
+    }
+
+    .checkbox label::before {
+      content: "";
+      display: inline-block;
+      position: absolute;
+      width: 17px;
+      height: 17px;
+      left: 0;
+      margin-left: -20px;
+      border: 1px solid #cccccc;
+      border-radius: 3px;
+      background-color: #fff;
+      -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+      -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+      transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+    }
+
+    .checkbox label::after {
+      display: inline-block;
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 0;
+      top: 0;
+      margin-left: -20px;
+      padding-left: 3px;
+      padding-top: 1px;
+      font-size: 11px;
+      color: #555555;
+    }
+
+    .checkbox input[type="checkbox"] {
+      opacity: 0;
+    }
+
+    .checkbox input[type="checkbox"]:focus+label::before {
+      outline: thin dotted;
+      outline: 5px auto -webkit-focus-ring-color;
+      outline-offset: -2px;
+    }
+
+    .checkbox input[type="checkbox"]:checked+label::after {
+      font-family: 'FontAwesome';
+      content: "\f00c";
+    }
+
+    .checkbox input[type="checkbox"]:disabled+label {
+      opacity: 0.65;
+    }
+
+    .checkbox input[type="checkbox"]:disabled+label::before {
+      background-color: #eeeeee;
+      cursor: not-allowed;
+    }
+
+    .checkbox.checkbox-circle label::before {
+      border-radius: 50%;
+    }
+
+    .checkbox.checkbox-inline {
+      margin-top: 0;
+    }
+
+    .checkbox-info input[type="checkbox"]:checked+label::before {
+      background-color: #5bc0de;
+      border-color: #5bc0de;
+    }
+
+    .checkbox-info input[type="checkbox"]:checked+label::after {
+      color: #fff;
+    }
+    /**/
+    /*	--------------------------------------------------
+	:: Table Filter
+	-------------------------------------------------- */
+
+    .panel {
+      border: 1px solid #ddd;
+      background-color: #f5f5f5;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
+    }
+
+    .panel .btn-group {
+      margin: 15px 0 30px;
+    }
+
+    .panel .btn-group .btn {
+      transition: background-color .3s ease;
+    }
+
+    .table-filter {
+      background-color: #fff;
+      border-bottom: 1px solid #eee;
+    }
+
+    .table-filter tbody tr:hover {
+      cursor: pointer;
+      background-color: #eee;
+    }
+
+    .table-filter tbody tr td {
+      padding: 10px;
+      vertical-align: middle;
+      border-top-color: #eee;
+    }
+
+    .table-filter tbody tr.selected td {
+      background-color: #eee;
+    }
+    /*.table-filter tr td:first-child {
+      width: 38px;
+    }
+    
+    .table-filter tr td:nth-child(2) {
+      width: 35px;
+    }*/
+
+    .ckbox {
+      position: relative;
+    }
+
+    .ckbox input[type="checkbox"] {
+      opacity: 0;
+    }
+
+    .ckbox label {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    .ckbox label:before {
+      content: '';
+      top: 1px;
+      left: 0;
+      width: 18px;
+      height: 18px;
+      display: block;
+      position: absolute;
+      border-radius: 2px;
+      border: 1px solid #bbb;
+      background-color: #fff;
+    }
+
+    .ckbox input[type="checkbox"]:checked+label:before {
+      border-color: #2BBCDE;
+      background-color: #2BBCDE;
+    }
+
+    .ckbox input[type="checkbox"]:checked+label:after {
+      top: 3px;
+      left: 3.5px;
+      content: '\e013';
+      color: #fff;
+      font-size: 11px;
+      font-family: 'Glyphicons Halflings';
+      position: absolute;
+    }
+
+    .table-filter .star {
+      color: #ccc;
+      text-align: center;
+      display: block;
+    }
+
+    .table-filter .star.star-checked {
+      color: #F0AD4E;
+    }
+
+    .table-filter .star:hover {
+      color: #ccc;
+    }
+
+    .table-filter .star.star-checked:hover {
+      color: #F0AD4E;
+    }
+
+    .table-filter .media-photo {
+      width: 35px;
+    }
+
+    .table-filter .media-body {
+      display: block;
+      /* Had to use this style to force the div to expand (wasn't necessary with my bootstrap version 3.3.6) */
+    }
+
+    .table-filter .media-meta {
+      font-size: 11px;
+      color: #999;
+    }
+
+    .table-filter .media .title {
+      color: #2BBCDE;
+      font-size: 14px;
+      font-weight: bold;
+      line-height: normal;
+      margin: 0;
+    }
+
+    .table-filter .media .title span {
+      font-size: .8em;
+      margin-right: 20px;
+    }
+
+    .table-filter .media .title span.pagado {
+      color: #5cb85c;
+    }
+
+    .table-filter .media .title span.pendiente {
+      color: #f0ad4e;
+    }
+
+    .table-filter .media .title span.cancelado {
+      color: #d9534f;
+    }
+
+    .table-filter .media .summary {
+      font-size: 14px;
+    }
+    /*------------------------*/
+
+    .badge-purple {
+      background-color: #9585bf!important
+    }
+
+    .btn-red {
+      color: #f8f8f8;
+      background-color: #F34235;
+      border-color: #c3352b;
+    }
+
+    .btn-red:hover {
+      color: #fff;
+      background-color: #c3352b;
+      border-color: #c3352b;
+    }
+
+    .btn-lred {
+      color: #F34235;
+      background-color: transparent;
+      border-color: #F34235;
+    }
+
+    .btn-lred:hover {
+      color: #fff;
+      background-color: #F34235;
+      border-color: #F34235;
+    }
+
+    .btn-pink {
+      color: #f8f8f8;
+      background-color: #E81D62;
+      border-color: #c51954;
+    }
+
+    .btn-pink:hover {
+      color: #fff;
+      background-color: #c51954;
+      border-color: #c51954;
+    }
+
+    .btn-lpink {
+      color: #E81D62;
+      background-color: transparent;
+      border-color: #c51954;
+    }
+
+    .btn-lpink:hover {
+      color: #fff;
+      background-color: #E81D62;
+      border-color: #E81D62;
+    }
+
+    .btn-purple {
+      color: #f8f8f8;
+      background-color: #9B26AF;
+      border-color: #89219b;
+    }
+
+    .btn-purple:hover {
+      color: #fff;
+      background-color: #89219b;
+      border-color: #89219b;
+    }
+
+    .btn-lpurple {
+      color: #9B26AF;
+      background-color: transparent;
+      border-color: #9B26AF;
+    }
+
+    .btn-lpurple:hover {
+      color: #fff;
+      background-color: #9B26AF;
+      border-color: #9B26AF;
+    }
+
+    .btn-deep-purple {
+      color: #f8f8f8;
+      background-color: #6639B6;
+      border-color: #5e35a8;
+    }
+
+    .btn-deep-purple:hover {
+      color: #fff;
+      background-color: #5e35a8;
+      border-color: #5e35a8;
+    }
+
+    .btn-ldeep-purple {
+      color: #6639B6;
+      background-color: transparent;
+      border-color: #6639B6;
+    }
+
+    .btn-ldeep-purple:hover {
+      color: #fff;
+      background-color: #6639B6;
+      border-color: #6639B6;
+    }
+
+    .btn-indigo {
+      color: #f8f8f8;
+      background-color: #3E50B4;
+      border-color: #3949a2;
+    }
+
+    .btn-indigo:hover {
+      color: #fff;
+      background-color: #3949a2;
+      border-color: #3949a2;
+    }
+
+    .btn-indigo-two {
+      color: #f8f8f8;
+      background-color: #4e69a2;
+      border-color: #4e69a2;
+    }
+
+    .btn-indigo-two:hover {
+      color: #fff;
+      background-color: #4e69a2;
+      border-color: #4e69a2;
+    }
+
+    .btn-lindigo-two {
+      color: #4e69a2;
+      background-color: transparent;
+      border-color: #4e69a2;
+    }
+
+    .btn-lindigo-two:hover {
+      color: #fff;
+      background-color: #4e69a2;
+      border-color: #4e69a2;
+    }
+
+    .btn-lindigo {
+      color: #4e69a2;
+      background-color: transparent;
+      border-color: #4e69a2;
+    }
+
+    .btn-lindigo:hover {
+      color: #fff;
+      background-color: #4e69a2;
+      border-color: #4e69a2;
+    }
+
+    .btn-blue {
+      color: #f8f8f8;
+      background-color: #2095F2;
+      border-color: #1a80d1;
+    }
+
+    .btn-blue:hover {
+      color: #fff;
+      background-color: #1a80d1;
+      border-color: #1a80d1;
+    }
+
+    .btn-lblue {
+      color: #2095F2;
+      background-color: transparent;
+      border-color: #2095F2;
+    }
+
+    .btn-lblue:hover {
+      color: #fff;
+      background-color: #2095F2;
+      border-color: #2095F2;
+    }
+
+    .btn-light-blue {
+      color: #f8f8f8;
+      background-color: #02A8F3;
+      border-color: #0396d8;
+    }
+
+    .btn-light-blue:hover {
+      color: #fff;
+      background-color: #0396d8;
+      border-color: #0396d8;
+    }
+
+    .btn-llight-blue {
+      color: #02A8F3;
+      background-color: transparent;
+      border-color: #02A8F3;
+    }
+
+    .btn-llight-blue:hover {
+      color: #fff;
+      background-color: #02A8F3;
+      border-color: #02A8F3;
+    }
+
+    .btn-cyan {
+      color: #f8f8f8;
+      background-color: #00BBD3;
+      border-color: #009fb3;
+    }
+
+    .btn-cyan:hover {
+      color: #fff;
+      background-color: #009fb3;
+      border-color: #009fb3;
+    }
+
+    .btn-lcyan {
+      color: #00BBD3;
+      background-color: transparent;
+      border-color: #00BBD3;
+    }
+
+    .btn-lcyan:hover {
+      color: #fff;
+      background-color: #00BBD3;
+      border-color: #00BBD3;
+    }
+
+    .btn-teal {
+      color: #f8f8f8;
+      background-color: #009587;
+      border-color: #018175;
+    }
+
+    .btn-teal:hover {
+      color: #fff;
+      background-color: #018175;
+      border-color: #018175;
+    }
+
+    .btn-lteal {
+      color: #009587;
+      background-color: transparent;
+      border-color: #009587;
+    }
+
+    .btn-lteal:hover {
+      color: #fff;
+      background-color: #009587;
+      border-color: #009587;
+    }
+
+    .btn-green {
+      color: #f8f8f8;
+      background-color: #00C191;
+      border-color: #00C191;
+    }
+
+    .btn-green:hover {
+      color: #fff;
+      background-color: #00C191;
+      border-color: #00C191;
+    }
+
+    .btn-lgreen {
+      color: #00C191;
+      background-color: transparent;
+      border-color: #00C191;
+    }
+
+    .btn-lgreen:hover {
+      color: #fff;
+      background-color: #00C191;
+      border-color: #00C191;
+    }
+
+    .btn-light-green {
+      color: #f8f8f8;
+      background-color: #8AC249;
+      border-color: #78a83f;
+    }
+
+    .btn-light-green:hover {
+      color: #fff;
+      background-color: #78a83f;
+      border-color: #78a83f;
+    }
+
+    .btn-llight-green {
+      color: #8AC249;
+      background-color: transparent;
+      border-color: #8AC249;
+    }
+
+    .btn-llight-green:hover {
+      color: #fff;
+      background-color: #8AC249;
+      border-color: #8AC249;
+    }
+
+    .btn-lime {
+      color: #f8f8f8;
+      background-color: #CCDB38;
+      border-color: #bbc933;
+    }
+
+    .btn-lime:hover {
+      color: #fff;
+      background-color: #bbc933;
+      border-color: #bbc933;
+    }
+
+    .btn-llime {
+      color: #CCDB38;
+      background-color: transparent;
+      border-color: #CCDB38;
+    }
+
+    .btn-llime:hover {
+      color: #fff;
+      background-color: #CCDB38;
+      border-color: #CCDB38;
+    }
+
+    .btn-yellow {
+      color: #f8f8f8;
+      background-color: #FEEA3A;
+      border-color: #e4d235;
+    }
+
+    .btn-yellow:hover {
+      color: #fff;
+      background-color: #e4d235;
+      border-color: #e4d235;
+    }
+
+    .btn-lyellow {
+      color: #FEEA3A;
+      background-color: transparent;
+      border-color: #FEEA3A;
+    }
+
+    .btn-lyellow:hover {
+      color: #fff;
+      background-color: #FEEA3A;
+      border-color: #FEEA3A;
+    }
+
+    .btn-amber {
+      color: #f8f8f8;
+      background-color: #FEC006;
+      border-color: #e1aa05;
+    }
+
+    .btn-amber:hover {
+      color: #fff;
+      background-color: #e1aa05;
+      border-color: #e1aa05;
+    }
+
+    .btn-lamber {
+      color: #FEC006;
+      background-color: transparent;
+      border-color: #FEC006;
+    }
+
+    .btn-lamber:hover {
+      color: #fff;
+      background-color: #FEC006;
+      border-color: #FEC006;
+    }
+
+    .btn-orange {
+      color: #f8f8f8;
+      background-color: #FE9700;
+      border-color: #e78a01;
+    }
+
+    .btn-orange:hover {
+      color: #fff;
+      background-color: #e78a01;
+      border-color: #e78a01;
+    }
+
+    .btn-lorange {
+      color: #FE9700;
+      background-color: transparent;
+      border-color: #FE9700;
+    }
+
+    .btn-lorange:hover {
+      color: #fff;
+      background-color: #FE9700;
+      border-color: #FE9700;
+    }
+
+    .btn-deep-orange {
+      color: #f8f8f8;
+      background-color: #FE5621;
+      border-color: #d4481c;
+    }
+
+    .btn-deep-orange:hover {
+      color: #fff;
+      background-color: #d4481c;
+      border-color: #d4481c;
+    }
+
+    .btn-ldeep-orange {
+      color: #FE5621;
+      background-color: transparent;
+      border-color: #FE5621;
+    }
+
+    .btn-ldeep-orange:hover {
+      color: #fff;
+      background-color: #FE5621;
+      border-color: #FE5621;
+    }
+
+    .btn-brown {
+      color: #f8f8f8;
+      background-color: #785447;
+      border-color: #65463b;
+    }
+
+    .btn-brown:hover {
+      color: #fff;
+      background-color: #65463b;
+      border-color: #65463b;
+    }
+
+    .btn-lbrown {
+      color: #785447;
+      background-color: transparent;
+      border-color: #785447;
+    }
+
+    .btn-lbrown:hover {
+      color: #fff;
+      background-color: #785447;
+      border-color: #785447;
+    }
+
+    .btn-gray {
+      color: #f8f8f8;
+      background-color: #9D9D9D;
+      border-color: #888888;
+    }
+
+    .btn-gray:hover {
+      color: #ffffff;
+      background-color: #888888;
+      border-color: #888888;
+    }
+
+    .btn-lgray {
+      color: #9D9D9D;
+      background-color: transparent;
+      border-color: #9D9D9D;
+    }
+
+    .btn-lgray:hover {
+      color: #fff;
+      background-color: #9D9D9D;
+      border-color: #9D9D9D;
+    }
+
+    .btn-blue-gray {
+      color: #f8f8f8;
+      background-color: #5F7C8A;
+      border-color: #516a76;
+    }
+
+    .btn-blue-gray:hover {
+      color: #fff;
+      background-color: #516a76;
+      border-color: #516a76;
+    }
+
+    .btn-lblue-gray {
+      color: #5F7C8A;
+      background-color: transparent;
+      border-color: #5F7C8A;
+    }
+
+    .btn-lblue-gray:hover {
+      color: #fff;
+      background-color: #5F7C8A;
+      border-color: #5F7C8A;
+    }
+
+    .btn-black {
+      color: #f8f8f8;
+      background-color: #2d2d2d;
+      border-color: #000000;
+    }
+
+    .btn-black:hover {
+      color: #fff;
+      background-color: #000000;
+      border-color: #000000;
+    }
+
+    .btn-lblack {
+      color: #2d2d2d;
+      background-color: transparent;
+      border-color: #2d2d2d;
+    }
+
+    .btn-lblack:hover {
+      color: #fff;
+      background-color: #2d2d2d;
+      border-color: #2d2d2d;
+    }
+
+    .btn-white {
+      color: #000000;
+      background-color: #ffffff;
+      border-color: #d3d3d3;
+    }
+
+    .btn-white:hover {
+      color: #222222;
+      background-color: #f7f7f7;
+      border-color: #d3d3d3;
+    }
+
+    .text-red {
+      color: #F34235;
+    }
+
+    .text-pink {
+      color: #E81D62;
+    }
+
+    .text-purple {
+      color: #9B26AF;
+    }
+
+    .text-deep-purple {
+      color: #6639B6;
+    }
+
+    .text-indigo {
+      color: #3E50B4;
+    }
+
+    .text-blue {
+      color: #2095F2;
+    }
+
+    .text-light-blue {
+      color: #02A8F3;
+    }
+
+    .text-cyan {
+      color: #00BBD3;
+    }
+
+    .text-teal {
+      color: #009587;
+    }
+
+    .text-green {
+      color: #4BAE4F;
+    }
+
+    .text-light-green {
+      color: #8AC249;
+    }
+
+    .text-lime {
+      color: #CCDB38;
+    }
+
+    .text-yellow {
+      color: #FEEA3A;
+    }
+
+    .text-amber {
+      color: #FEC006;
+    }
+
+    .text-orange {
+      color: #FE9700;
+    }
+
+    .text-deep-orange {
+      color: #FE5621;
+    }
+
+    .text-brown {
+      color: #785447;
+    }
+
+    .text-gray {
+      color: #9D9D9D;
+    }
+
+    .text-blue-gray {
+      color: #5F7C8A;
+    }
+
+    .text-black {
+      color: #2d2d2d;
+    }
+
+    .no-gutter {
+      padding: 0;
+      margin: 0;
+    }
+
+    ai-dialog,
+    ai-dialog-container>div>div {
+      min-width: 75%;
+      max-width: 75%;
+      display: block;
+    }
+
+    .ColorProduct {
+      font-style: normal;
+      color: #10b6ea;
+      font-weight: bold;
+    }
+
+    .TieuDeNoiDung {
+      font-style: italic;
+      text-decoration: underline;
+    }
+
+    .Phanhoinoidung {
+      height: 150px;
+      width: 99%;
+    }
+
+    .NoiDungTraLoi:focus {
+      box-shadow: 0 0 5px #51cbee;
+      border: 1px solid #51cbee;
+    }
+
+    ai-dialog-container>div {
+      padding: 100px;
+    }
+
+    .NoiDungTraLoi {
+      padding: 10px 50px 10px 10px;
+      margin: 0 0;
+      outline: none;
+      border: 1px solid #7e9de2;
+      background: #FFF;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #222;
+      line-height: 22px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      box-shadow: inset 0px 0px 2px 1px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      width: 100%;
+    }
+
+    #container1 {
+      height: 100%;
+      width: 99%;
+    }
+
+    .header-label {
+      color: #635d5d;
+      text-transform: capitalize;
+      font-family: "Roboto", sans-serif;
+      font-size: 12px !important;
+      letter-spacing: 0.1px;
+    }
+
+    .thongtin {
+      margin-left: 11px;
+    }
+
+    .mouse-hover:hover {
+      cursor: zoom-in;
+    }
+
+    .no-padding {
+      padding: 0;
+      margin-bottom: 20px;
+    }
+
+    .required {
+      color: red;
+    }
+  </style>
+  <ai-dialog class="edit-form">
+
+    <div class="modal-header modal-header-success">
+      <button type="button" class="close" data-dismiss="modal" click.delegate="cancelButtonClick()" cancelButtonClick aria-label="Close"><span>&times;</span></button>
+      <h4 style="margin-bottom: 30px"><b>THÊM CHƯƠNG TRÌNH</b></h4>
+    </div>
+
+    <ai-dialog-body style="background-color: #F5F5F5;">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="panel panel-default">
+
+            <div class="panel-body">
+              <div class="row no-gutter">
+                <div class="col-md-12 col-xs-12 col-lg-12">
+                  </br>
+                  <hr class="hrdot">
+                  <form class="form-horizontal" role="form">
+                    <div class="no-padding form-group">
+                      <label class="header-label">Tên chương trình: <span class="required">(*)</span></label>
+                      <input type="text" class="form-control" value.bind="CampaignName">
+                      <span class="help-block"></span>
+                    </div>
+
+                    <div class="no-padding form-group">
+                      <label class="header-label">Hiệu lực chương trình: <span class="required">(*)</span></label>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="input-daterange date">
+                            <input type="text" id="txtFilterDateStart" class="form-control" value.bind="start" placeholder="Ngày bắt đầu"  onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                          
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="input-daterange date">
+                            <input type="text" id="txtFilterDateEnd" class="form-control" value.bind="end" placeholder="Ngày kết thúc"  onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                          </div>
+                        </div>
+                      </div>
+                      <span class="help-block"></span>
+                    </div>
+
+                    <div class="no-padding form-group">
+
+                      <label class="header-label">Upload rổ sản phẩm: <span class="required">(*)</span></label>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <form id="dataForm123" method="post" enctype="multipart/form-data">
+                            <input type="file" name="UploadFile" id="UploadFile" accept=".xls,.xlsx" files.bind="SelectFile" change.delegate="onSelectFile(SelectFile)"
+                            />
+                          </form>
+                        </div>
+                        
+                      </div>
+                      <span class="help-block"></span>
+                    </div>
+
+
+
+                    <div class="no-padding form-group">
+                      <br>
+                      <label class="header-label">Rổ sản phẩm:</label>
+                      <div class="table-responsive">
+                        <table id="tableGifts" class="table table-filter">
+                          <thead class="header-Table">
+                            <tr>
+                              <th>STT</th>
+                              <th>Tên sản phẩm</th>
+
+                            </tr>
+                          </thead>
+                          <tbody ref="mydata" items.bind="ListItems">
+
+                            <tr repeat.for="dt of mydata.items  | takeFromTo: (current-1)* (itemperpage):current * (itemperpage)">
+                              <td> ${(current-1)*20+$index+1}</td>
+                              <td>${dt.ProductName}</td>
+                            </tr>
+
+                            <tr if.bind="total> 0">
+                              <td colspan="3" style="text-align: right;">
+                                <pagination page-size.bind="pagesize" total.bind="total" item-per-page.bind="itemperpage" current-page.bind="current"></pagination>
+                              </td>
+                            </tr>
+                            <tr if.bind="total<= 0 || !ListItems">
+                              <td colspan="3" style="text-align: center;">
+                                Không tìm thấy kết quả thỏa điều kiện.
+                              </td>
+                            </tr>
+                          </tbody>
+
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="no-padding form-group">
+                        <div class="row">
+                        <div class="col-md-8">
+                        </div>
+                        <div class="col-md-4">
+                          <button type="submit" click.delegate='doSubmit()' value="Upload" style="width: 100%;  max-width:100%" id="idhuy" class="btn btn-indigo-two  btnsearch"
+                         disabled.bind="DisableHuy" >Thêm Chương trình</button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-4 header-label">
+                        <span class="required">(*)</span>Thông tin bắt buộc nhập
+                      </div>
+                      <div class="col-md-4">
+                      </div>
+
+                    </div>
+                  </form>
+
+
+
+
+
+
+    </ai-dialog-body>
+    <ai-dialog-footer>
+
+
+    </ai-dialog-footer>
+  </ai-dialog>
+</template>

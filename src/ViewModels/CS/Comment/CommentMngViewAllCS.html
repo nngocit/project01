@@ -1,0 +1,59 @@
+<template>
+  <style>
+  
+     ai-dialog-overlay.active {
+      background-color: black;
+      opacity: .5;
+    }
+    .block_content {
+      height: auto;
+    }
+    
+    .Productname {
+      color: #33b78b
+    }
+    
+    .BorderCmt {
+      font-size: 12px;
+      border-radius: 6px;
+      position: relative;
+      padding: -5px 7px;
+      background: #EFF3F6;
+      border: 1px solid #EFF3F6;
+      margin: 7px 2px 1px 18px;
+    }
+
+  </style>
+  <ai-dialog class="edit-form-viewall" style="min-width: 50%;">
+    <ai-dialog-header>
+      <h4><b>Xem comment của sản phẩm</b><span class="Productname">&nbsp${SP_TenSP==""?SP_URL:SP_TenSP}</span></h4>
+    </ai-dialog-header>
+    <ai-dialog-body>
+     
+      <div id="container1" style="overflow-x: hidden;overflow-y: scroll;height: 280px; ">
+         
+        <div class="block">
+          <div class="block_content BorderCmt" repeat.for="rep of ListReplies | takeFromTo: (current-1)* (itemperpage):current * (itemperpage)">
+            <div class="row">
+              <div class="col-md-10">
+                <div class="col-md-12">
+                  <strong class="title" show.bind="rep.TypeQuanTri === 'T'">Viễn thông A phản hồi </strong><span class="text-muted"
+                    show.bind="rep.TypeQuanTri === 'T'">${rep.CreateDateTime  }</span>
+                  <strong class="title" show.bind="rep.TypeQuanTri === 'F'">Khách hàng hỏi</strong> <span class="text-muted"
+                    show.bind="rep.TypeQuanTri === 'F'">${rep.CreateDateTime  }</span>
+                </div>
+              </div>
+            </div>
+            <p class="excerpt" innerhtml.bind=rep.NoiDung></p>
+          </div>
+          <tr if.bind="total > 0">
+            <td colspan="6" style="text-align: right;">
+              <pagination page-size.bind="pagesize" total.bind="total" item-per-page.bind="itemperpage" current-page.bind="current"></pagination>
+            </td>
+          </tr>
+        </div>
+      </div>
+      <!--End Noi Dung-->
+    </ai-dialog-body>
+  </ai-dialog>
+</template>

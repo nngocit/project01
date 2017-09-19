@@ -1,0 +1,71 @@
+/* */ 
+"use strict";
+var __extends = (this && this.__extends) || function(d, b) {
+  for (var p in b)
+    if (b.hasOwnProperty(p))
+      d[p] = b[p];
+  function __() {
+    this.constructor = d;
+  }
+  d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var utils_1 = require('../../utils');
+var component_1 = require('../../widgets/component');
+var AnimateSlideCellRenderer = (function(_super) {
+  __extends(AnimateSlideCellRenderer, _super);
+  function AnimateSlideCellRenderer() {
+    var _this = _super.call(this, AnimateSlideCellRenderer.TEMPLATE) || this;
+    _this.refreshCount = 0;
+    _this.eCurrent = _this.queryForHtmlElement('.ag-value-slide-current');
+    return _this;
+  }
+  AnimateSlideCellRenderer.prototype.init = function(params) {
+    this.params = params;
+    this.refresh(params);
+  };
+  AnimateSlideCellRenderer.prototype.addSlideAnimation = function() {
+    var _this = this;
+    this.refreshCount++;
+    var refreshCountCopy = this.refreshCount;
+    if (this.ePrevious) {
+      this.getGui().removeChild(this.ePrevious);
+    }
+    this.ePrevious = utils_1.Utils.loadTemplate('<span class="ag-value-slide-previous ag-value-slide-out"></span>');
+    this.ePrevious.innerHTML = this.eCurrent.innerHTML;
+    this.getGui().insertBefore(this.ePrevious, this.eCurrent);
+    setTimeout(function() {
+      if (refreshCountCopy !== _this.refreshCount) {
+        return;
+      }
+      utils_1.Utils.addCssClass(_this.ePrevious, 'ag-value-slide-out-end');
+    }, 50);
+    setTimeout(function() {
+      if (refreshCountCopy !== _this.refreshCount) {
+        return;
+      }
+      _this.getGui().removeChild(_this.ePrevious);
+      _this.ePrevious = null;
+    }, 3000);
+  };
+  AnimateSlideCellRenderer.prototype.refresh = function(params) {
+    var value = params.value;
+    if (utils_1.Utils.missing(value)) {
+      value = '';
+    }
+    if (value === this.lastValue) {
+      return;
+    }
+    this.addSlideAnimation();
+    this.lastValue = value;
+    if (utils_1.Utils.exists(params.valueFormatted)) {
+      this.eCurrent.innerHTML = params.valueFormatted;
+    } else if (utils_1.Utils.exists(params.value)) {
+      this.eCurrent.innerHTML = value;
+    } else {
+      this.eCurrent.innerHTML = '';
+    }
+  };
+  return AnimateSlideCellRenderer;
+}(component_1.Component));
+AnimateSlideCellRenderer.TEMPLATE = '<span>' + '<span class="ag-value-slide-current"></span>' + '</span>';
+exports.AnimateSlideCellRenderer = AnimateSlideCellRenderer;

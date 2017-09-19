@@ -1,0 +1,48 @@
+<template>
+  <nav id='nav_bar' class="navbar navbar-default navbar-static-top" style=" box-shadow: 0 0 14px 0 rgba(0,0,0,.2);">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-7" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span> <span class="icon-bar"></span>
+          <span class="icon-bar"></span> </button> <a class="navbar-brand">Web Quay số</a>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-7">
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle ${row.isActive ? 'active' : ''}" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Back To School
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li repeat.for="row of router.navigation"  class="${row.isActive ? 'active' : ''}">
+                <a href.bind="row.href">${row.title}</span></a>
+              </li>
+            </ul>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <section class="au-animate">
+       <div class="row" style="margin-top: 50px">
+      <div class="col-md-12" style="padding: 0">
+        <router-view></router-view>
+      </div>
+    </div>
+    
+  </section>
+   <style>
+    .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
+    color: #fff;
+    text-decoration: none;
+    background-color: #00c191;
+    outline: 0;
+}
+.navbar-fixed {
+    top: 50;
+    z-index: 100;
+  position: fixed;
+    width: 100%;
+}
+</style>
+</template>

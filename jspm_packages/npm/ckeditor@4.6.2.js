@@ -1,0 +1,1 @@
+module.exports = require("npm:ckeditor@4.6.2/ckeditor.js");

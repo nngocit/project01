@@ -1,0 +1,229 @@
+<template>
+  <style>
+    ai-dialog-overlay.active {
+      background-color: black;
+      opacity: .5;
+    }
+
+    .block_content {
+      height: auto;
+    }
+
+    .Productname {
+      color: #33b78b
+    }
+
+    .BorderCmt {
+      font-size: 12px;
+      border-radius: 6px;
+      position: relative;
+      padding: -5px 7px;
+      background: #EFF3F6;
+      border: 1px solid #EFF3F6;
+      margin: 7px 2px 1px 18px;
+    }
+
+    .thongtin {
+      margin-left: 11px;
+    }
+  </style>
+  <ai-dialog class="edit-form-viewall" style="min-width: 50%;">
+
+    <div class="modal-header modal-header-success">
+      <button type="button" class="close" data-dismiss="modal" click.delegate="cancelButtonClick()" cancelButtonClick aria-label="Close"><span>&times;</span></button>
+      <h4><b>CẬP NHẬT&nbsp${NoiDung}</b></h4>
+    </div>
+
+    <ai-dialog-body>
+
+      <div class="panel-body">
+        <div class="row no-gutter">
+          <div class="col-md-12 col-xs-12 col-lg-12">
+            <form class="form-horizontal" role="form">
+
+              <div class="row">
+                <div class="col-md-4 thongtin">
+                  <h5>
+                    <p>Họ tên khách hàng:</p>
+                  </h5>
+                </div>
+                <div class="col-md-6">
+                  <h5>
+                    <input type="text" class="form-control" value.bind="entity.simSoMic.C_FullName">
+                  </h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 thongtin">
+                  <h5>
+                    <p>Giới tính:</p>
+                  </h5>
+                </div>
+                <div class="col-md-6">
+                  <h5>
+                    <select id="Gtid" class="form-control" value.bind="entity.simSoMic.C_Sex">
+                   <option value="">===Chọn Giới tính===</option>
+                      <option value="M">Anh</option>
+                      <option value="F">Chị</option>
+                     
+              </select>
+                  </h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 thongtin">
+                  <h5>
+                    <p>Số điện thoại:</p>
+                  </h5>
+                </div>
+                <div class="col-md-6">
+                  <h5>
+                    <input type="number" class="form-control" value.bind="entity.simSoMic.C_Phone">
+                  </h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 thongtin">
+                  <h5>
+                    <p>Email:</p>
+                  </h5>
+                </div>
+                <div class="col-md-6">
+                  <h5>
+                    <input type="text" class="form-control" value.bind="entity.simSoMic.C_Email">
+                  </h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 thongtin">
+                  <h5>
+                    <p>CMND:</p>
+                  </h5>
+                </div>
+                <div class="col-md-6">
+                  <h5>
+                    <input type="text" class="form-control" value.bind="entity.simSoMic.C_CMND">
+                  </h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 thongtin">
+                  <h5>
+                    <p>Tỉnh/Thành phố:</p>
+                  </h5>
+                </div>
+                <div class="col-md-6">
+                  <h5>
+                    <select id="P_TinhThanhId" class="form-control" value.bind="tinhthanhid">
+                        <option value="">===Chọn Tỉnh/Thành===</option>
+                          <option repeat.for="item of ListTinhThanh"  model.bind="item.Cityid" value.bind="item.Cityid">${item.Cityname}</option>
+                          </select>
+                  </h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 thongtin">
+                  <h5>
+                    <p>Huyện/Quận:</p>
+                  </h5>
+                </div>
+                <div class="col-md-6">
+                  <h5>
+                    <select id="P_QuanHuyenId" class="form-control" value.bind="quanhuyenid">
+                            <option value="">===Chọn Quận/huyện===</option>
+                          <option repeat.for="item of ListQuanHuyen" model.bind="item.DistrictId" value.bind="item.DistrictId">${item.Districtname}</option>
+                          </select>
+                  </h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 thongtin">
+                  <h5>
+                    <p>Số nhà, tên đường:</p>
+                  </h5>
+                </div>
+                <div class="col-md-6">
+                  <h5>
+                    <input type="text"  class="form-control" value.bind="entity.simSoMic.C_Address">
+                  </h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 thongtin">
+                  <h5>
+                    <p>Hình CMND mặt trước:</p>
+                  </h5>
+                </div>
+                <div class="col-md-6">
+                  <h5>
+                    <div class="image-upload">
+                      <div class="input-group">
+
+                        <label class="header-label">Chọn file hình ảnh (.jpg, .jpeg, .png):</label>
+
+                        <input type="file" accept="image/*" files.bind="File1" change.delegate="onSelectFile1(File1)" name="fileUpload1" id="fileUpload1"
+                          accept=".png,.jpg,.jpeg" />
+
+                      </div>
+                    </div>
+                  </h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 thongtin">
+                  <h5>
+                    <p>Hình CMND mặt sau:</p>
+                  </h5>
+                </div>
+                <div class="col-md-6">
+                  <h5>
+                    <div class="image-upload">
+                      <div class="input-group">
+
+                        <label class="header-label">Chọn file hình ảnh (.jpg, .jpeg, .png):</label>
+
+                        <input type="file" accept="image/*" files.bind="File2" change.delegate="onSelectFile2(File2)" name="fileUpload2" id="fileUpload2"
+                          accept=".png,.jpg,.jpeg" />
+
+                      </div>
+                    </div>
+                  </h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 thongtin">
+                  <h5>
+                    <p>Hình CMND đính kèm:</p>
+                  </h5>
+                </div>
+                <div class="col-md-6">
+                  <h5>
+                    <div class="image-upload">
+                      <div class="input-group">
+
+                        <label class="header-label">Chọn file hình ảnh (.jpg, .jpeg, .png):</label>
+
+                        <input type="file" accept="image/*" files.bind="File3" change.delegate="onSelectFile3(File3)" name="fileUpload3" id="fileUpload3"
+                          accept=".png,.jpg,.jpeg"/>
+
+                      </div>
+                    </div>
+                  </h5>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <button type="button" id="timkiem" class="btn btn-indigo-two  btnsearch" click.trigger="dialogController.ok()" click.delegate='Uploads()'>
+                <i class="fa fa-floppy-o"></i>&nbsp; CẬP NHẬT</button>
+                </div>
+
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!--End Noi Dung-->
+    </ai-dialog-body>
+  </ai-dialog>
+</template>

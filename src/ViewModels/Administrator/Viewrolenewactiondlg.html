@@ -1,0 +1,245 @@
+<template>
+
+    <!--<require from="../../resources/templates/validation-summary.html"></require>-->
+
+    <!--<require from="resources/CustomElements/datetime-picker/datetime-picker"></require>-->
+    <style>
+        /*fix z index*/
+        
+        body > span.select2-container {
+            z-index: 100111;
+        }
+        
+        ai-dialog-overlay.active {
+            background-color: black;
+            opacity: .5;
+            z-index: 9998 !important;
+        }
+        
+        .edit-form {}
+        
+        ai-dialog-container {
+            margin: 30px auto;
+            z-index: 100005 !important;
+        }
+        
+        ai-dialog,
+        ai-dialog-container>div>div {
+            min-width: 1200px;
+            margin: auto;
+            display: block;
+        }
+        
+        ai-dialog>ai-dialog-header {
+            padding: 11px 16px 4px;
+        }
+        
+        ai-dialog>ai-dialog-header>button {
+            display: inline-block;
+            float: none;
+        }
+        
+        ai-dialog-overlay.active {
+            background-color: black;
+            opacity: .5;
+        }
+        /*.form-group{height:68px}*/
+        
+        .des-form .form-group {
+            position: relative;
+            margin-bottom: 17px;
+        }
+        
+        .des-form .help-block {
+            position: absolute;
+            bottom: -29px;
+            font-size: 12px;
+            color: red;
+            font-style: italic;
+        }
+        /*HEARDER COL*/
+        
+        img {
+            width: 120px;
+            vertical-align: middle;
+        }
+        
+        .subheader {
+            background-position: left 2px;
+            background-color: #f9f9f9;
+            font-size: 18px;
+            padding: 10px;
+            color: #595959;
+            margin: 17px 0 10px;
+            border-bottom: 1px solid #dfdfdf;
+            clear: both;
+        }
+    </style>
+
+
+    <ai-dialog class="edit-form">
+        <ai-dialog-header>
+            <h3 show.bind="entity!=null && check==true">Chi tiết đơn hàng #${entity.MaDonhang} (Tổng:${entity.Tongtien | vietNamDong})</h3>
+
+            <!--<h3 show.bind="check==false">
+                Tạo mới EventSale
+             </h3>  -->
+        </ai-dialog-header>
+        <ai-dialog-body>
+
+
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <h5 style="margin-bottom: 30px;">Đơn hàng ${entity.MaDonhang}&nbsp;bởi&nbsp;${entity.TenKh}&nbsp;on&nbsp;${entity.Ngaydat |dateFormat:'DD/MM/YYYY'
+                        },&nbsp;${entity.LastUpdate | dateFormat:'HH:mm'}</h5>
+                </div>
+                <div class="col-xs-12">
+                    <button click.delegate="$parent.ViewOrder(DN)" data-backdrop="static" data-keyboard="false" type="button" class="btn btn-sm btn-lcyan"
+                        data-toggle="tooltip" title="Xem"><span class="glyphicon glyphicon-earphone"></span> Dịch vụ gọi Callcenter</button>
+                </div>
+            </div>
+
+            <br>
+            <br>
+            <br>
+            <div class="row">
+                <div class="form-group  col-xs-4 ">
+                    <label>ĐỊA CHỈ THANH TOÁN</label><br> ${entity.TenKh}
+                    <br> ${entity.Address}
+                    <br> ${entity.Phone}
+                    <br>
+                </div>
+                <div class="form-group  col-xs-4 ">
+                    <label> ĐỊA CHỈ NHẬN HÀNG</label><br> ${entity.TenKh}
+                    <br> ${entity.Address}
+                    <br> ${entity.Phone}
+                    <br>
+                </div>
+                <div class="form-group  col-xs-4 ">
+                    <label> THÔNG TIN THANH TOÁN</label><br>
+                    <div class="row">
+                        <div class="form-group  col-xs-4 ">
+                            Phương thức:
+                        </div>
+                        <div class="form-group  col-xs-6">
+                            Thanh toán trực tuyến&nbsp;<i style="font-size:11px"></br>(Thẻ ATM nội địa và Thẻ quốc tế VISA - MASTER)</i></br>
+                            <img id="profile-img" class="profile-img-card" src="images/123pay.jpg" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group  col-xs-8">
+
+                    <div class="row">
+                        <div class="form-group  col-xs-8 ">
+                            <b> ${entity.TenKh}</b,${entity.Email}<br> Điện thoại &nbsp;${entity.Phone}<br>CMND:-
+                        </div>
+                        <div class="form-group  col-xs-4">
+                           Ip Address: 172.0.0.1
+                        </div>
+                       
+
+                    </div>
+                </div>
+                <div class="form-group  col-xs-4 ">
+                    <label> THÔNG TIN VẬN CHUYỂN</label><br>
+                    <div class="row">
+                        <div class="form-group  col-xs-4 ">
+                            Phương thức:
+                        </div>
+                        <div class="form-group  col-xs-6">
+                            Tại nhà
+                        </div>
+                        <div class="form-group  col-xs-6">
+                            <button click.delegate="$parent.ViewOrder(DN)" data-backdrop="static" data-keyboard="false" type="button" class="btn btn-sm btn-lcyan"
+                                data-toggle="tooltip" title="Xem"><span class="glyphicon glyphicon-send"></span> Chuyển đơn hàng sang Kho ONL</button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+ <div class="row">
+                <div class="col-xs-12">
+                    <b>Số hợp đồng</b>
+                </div>
+ </div>
+ 
+ <!--Table-->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       
+
+      </div>
+
+      <div class="panel-body">
+        <div class="row">
+          <div class="form-group col-md-12">
+
+<!--
+            <label class="col">Tổng số lượng tìm được: </label>
+        
+            <span class="badge badge-purple">  ${"  " + GiftDN.items.length}</span>
+            <br>
+            <label class="col">Đơn hàng đã chọn: </label>
+          
+            <span class="badge badge-purple">  ${"  " + orderselect}</span>
+            -->
+          </div>
+
+        </div>
+
+
+        <div class="table-responsive">
+          <table id="tableGifts" class="table table-filter">
+            <thead>
+              <!--<th><input type="checkbox" checked.bind="checkAll" click.trigger="SelectAllBizProducts()"></th>-->
+            
+              <th>Sản phẩm</th>
+              <th>Ghi Chú</th>
+              <th>ComBo</th>
+              <th>Màu Sắc</th>
+              <th>Giá</th>
+              <th>Số Lượng</th>
+              <th>Tổng</th>
+            </thead>
+            <tbody ref="GiftDN" items.bind="listOrder">
+              <tr repeat.for="DN of GiftDN.items | takeFromTo: (current-1)* (itemperpage):current * (itemperpage)">
+                <!--<td><input type="checkbox" checked.bind="DN.checked" change.delegate="searchSchoolDistrict()"></td>-->
+                <td>${DN.MaDonhang} </td>
+                <td>${DN.Statusname}</td>
+                <td>${DN.TenLoaiDonhang}</td>
+                <td>${DN.Tencn}</td>
+                <td>${DN.TenKh}</td>
+                <td>${DN.Address}</td>
+                <td>${DN.OrderManagerName}</td>
+              </tr>
+
+              <tr if.bind="GiftDN.items.length > 0">
+                <td colspan="20">
+                  <pagination page-size.bind="pagesize" total.bind="GiftDN.items.lengths" item-per-page.bind="itemperpage" current-page.bind="current"></pagination>
+                </td>
+              </tr>
+              <tr if.bind="GiftDN.items.length <= 0">
+                <td colspan="20">
+                  Không tìm thấy đơn hàng.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+
+      </div>
+    </div>
+         
+
+        </ai-dialog-body>
+    </ai-dialog>
+</template>

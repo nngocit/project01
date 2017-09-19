@@ -1,0 +1,89 @@
+<template>
+  <section if.bind="isAccess">
+  <br>
+  <h5>Tài khoản chưa được phân quyền chức năng.</h5>
+  </section>
+  <section  if.bind="!isAccess">
+    <div class="panel panel-default">
+      
+      <div class="panel-body">
+        <div id="page-inner">
+          <div class="row text-center pad-top">
+            <div repeat.for="row of router.navigation">
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" if.bind="row.title!='DASHBOARD'">
+                <div class="div-square">
+                  <a href.bind="row.href">
+                    <!--<i class.bind="row.title == 'MARKETING' ? 'fa fa-building fa-5x' : row.title == 'CS' ? 'fa fa-th-large fa-5x' : row.title == 'ADMINISTRATOR' ? 'fa fa-building fa-5x' : 'fa fa-cubes fa-5x'"></i>-->
+                    <i class.bind="row.title == 'MOT' ? 'fa fa-building fa-5x' : row.title == 'MARKETING' ? 'fa fa-th-th fa-5x' :
+                      row.title == 'CS' ? 'fa fa-users fa-5x' : 'fa fa-cubes fa-5x'" class="au-target fa fa-users fa-5x" au-target-id="41"></i>
+                    <h4>${row.title}</h4>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <style>
+   /*Chỉnh style cho scrollbar*/
+    
+     ::-webkit-scrollbar {
+      border-radius: 10px;
+      width: 5px;
+      height: 5px;
+    }
+    
+     ::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background-color: #ccc;
+    }
+    
+     ::-webkit-scrollbar-track {
+      background-color: #eaeaea;
+      border-left: 1px solid #ccc;
+    }
+    /*End Style*/
+
+    div {
+      display: block;
+    }
+    
+    #page-wrapper {
+      padding: 15px 15px;
+      min-height: 600px;
+      background: #F3F3F3;
+    }
+    
+    #page-inner {
+      width: 50%;
+      margin: 10px 20px 10px 0px;
+      background-color: #fff!important;
+      padding: 10px;
+      min-height: 1050px;
+    }
+    
+    h4,
+    .h4 {
+      font-size: 15px;
+    }
+    
+    .div-square {
+      padding: 20px;
+      border: 3px double #e1e1e1;
+      -webkit-border-radius: 8px;
+      -moz-border-radius: 8px;
+      border-radius: 8px;
+      margin: 20px;
+    }
+    
+    .div-square&gt;
+    a,
+    .div-square&gt;
+    a:hover {
+      color: #808080;
+      text-decoration: none;
+    }
+  </style>
+</template>

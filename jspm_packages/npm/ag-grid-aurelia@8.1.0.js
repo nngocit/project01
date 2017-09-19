@@ -1,0 +1,1 @@
+module.exports = require("npm:ag-grid-aurelia@8.1.0/main.js");

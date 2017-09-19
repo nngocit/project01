@@ -1,0 +1,50 @@
+<template>
+  <style>
+    .background-animation-add {
+    -webkit-animation: changeBack 0.5s;
+    animation: changeBack 0.5s;
+}
+
+.background-animation-remove {
+    -webkit-animation: fadeIn 0.5s;
+    animation: fadeIn 0.5s;
+}
+ .background-animationw-add {
+    -webkit-animation: changeBackWarning 0.5s;
+    animation: changeBackWarning 0.5s;
+}
+
+.background-animationw-remove {
+    -webkit-animation: fadeIn 0.5s;
+    animation: fadeIn 0.5s;
+}
+
+@-webkit-keyframes changeBack {
+    0% { background-color: white; }
+    50% { background-color: lightgreen; }
+    100% { background-color: white; }
+}
+
+@keyframes changeBack {
+    0% { background-color: white; }
+    50% { background-color: lightgreen; }
+    100% { background-color: white; }
+}
+@-webkit-keyframes changeBackWarning {
+    0% { background-color: white; }
+    50% { background-color: lightcoral; }
+    100% { background-color: white; }
+}
+
+@keyframes changeBackWarning {
+    0% { background-color: white; }
+    50% { background-color: lightcoral; }
+    100% { background-color: white; }
+}
+    </style>
+  <require from="nav-bar.html"></require>
+  <nav-bar router.bind="router"></nav-bar>
+  <div class="page-host">
+    <router-view></router-view>
+  </div>
+</template>

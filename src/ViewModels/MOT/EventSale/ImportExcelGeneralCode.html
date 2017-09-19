@@ -1,0 +1,39 @@
+<template>
+  <ai-dialog class="edit-form">
+    <ai-dialog-header>
+      <h3><b>Import Excel</b></h3>
+    </ai-dialog-header>
+    <ai-dialog-body>
+
+        <form enctype="multipart/form-data" method="post" action="http://localhost:65381/uploadExcel-api/UploadExcelEventSale" id="ajaxUploadForm" novalidate="novalidate">
+        <!--<form enctype="multipart/form-data" method="post" action="http://localhost:65381/api/uploadExcel/UploadExcelCoBrand" id="ajaxUploadForm" novalidate="novalidate">-->
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-xs-9 required">
+                            <label class="control-label">Chọn file Excel (.xls, .xlsx): </label>
+                            <br>
+                            <input class="btn btn-default" style="width: 100%;" name="uploadFile" type="file" id="uploadFile" accept=".xls,.xlsx" value.bind="file" />
+                        </div>
+                        <div class="col-xs-3">
+                            <label class="control-label"></label>
+                            <br>
+                            <div class="input-form">
+                                <input type="submit" style="width: 150px; margin-top: 5px;" class="btn btn-primary btn-md" id="ajaxUploadButton" value="Upload" title="Upload Excel file">
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    </ai-dialog-body>
+  </ai-dialog>
+  <style>/*fix z index*/ body &gt; span.select2-container { z-index: 100111; } ai-dialog-overlay.active { background-color: black; opacity: .5; z-index: 9998 !important; } .edit-form {} ai-dialog-container { margin: 30px auto; z-index: 100005
+  !important; } ai-dialog, ai-dialog-container> form { min-width: 900px; margin: auto; display: block; } ai-dialog&gt;ai-dialog-header { padding: 5px 5px 5px; } ai-dialog&gt;ai-dialog-header&gt;button { display: inline-block; float: none;
+  } ai-dialog-overlay.active { background-color: black; opacity: .5; } /*.form-group{height:68px}*/ .des-form .form-group{ position: relative; margin-bottom: 17px; } .des-form .help-block{ position: absolute; bottom: -29px; font-size: 12px; color:
+  red; font-style: italic; }</style>
+</template>
